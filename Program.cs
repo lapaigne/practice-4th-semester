@@ -6,7 +6,7 @@
         {
             // roman
 
-            CallRoman();
+            //CallRoman();
 
             // ---
             // reversed
@@ -14,6 +14,14 @@
             //CallReversed();
 
             // ---
+            // password
+
+            //Password.Call();
+            
+            // ---
+            // weights
+
+            Weights.Call();
         }
 
         static void CallRoman()
