@@ -17,11 +17,25 @@
             // password
 
             //Password.Call();
-            
+
             // ---
             // weights
 
-            Weights.Call();
+            //Weights.Call();
+
+            //test2702
+
+            //var num = Test2702.G(3, 21);
+
+            Console.WriteLine(Test2702.F1(11));
+            Console.WriteLine(Test2702.F1(16));
+
+            Console.WriteLine(Test2702.F2(11));
+            Console.WriteLine(Test2702.F2(16));
+
+            //var num = Test2702.Calc2(3);
+
+            //Console.WriteLine(num);
         }
 
         static void CallRoman()

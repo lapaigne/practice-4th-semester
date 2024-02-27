@@ -2,7 +2,7 @@
 {
     internal class Weights
     {
-        static int[] weights = new int[] { 2, 5, 6, 2, 4, 7 };
+        static int[] weights = new int[] { 2, 4, 3, 2, 1, 4 };
 
         static void Evaluate(bool[] subset)
         {
