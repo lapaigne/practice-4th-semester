@@ -1,41 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-
-namespace practice_4th_semester
+﻿namespace practice_4th_semester
 {
     internal class Permutations
     {
+        static int[,] prices = { 
+            { 0, 2, 4, 7 }, 
+            { 2, 0, 3, 1 }, 
+            { 4, 2, 0, 1 }, 
+            { 3, 5, 2, 0 } 
+        };
+
+        public static void Evaluate(int[] permutations)
+        {
+            int price = 0;
+            for (int i = 0; i < permutations.Length; i++)
+            {
+                price += prices[permutations[i], permutations[(i + 1) % permutations.Length]];
+            }
+            foreach (var e in permutations)
+            {
+                Console.Write($"{e} ");
+            }
+            Console.Write($"{price}");
+            Console.WriteLine();
+        }
+
         public static void MakePermutations(int[] permutation, int position)
         {
             if (position == permutation.Length)
             {
-                foreach (var e in permutation)
-                {
-                    Console.Write($"{e} ");
-                }
-                Console.WriteLine();
+                Evaluate(permutation);
                 return;
             }
 
             for (int i = 0; i < permutation.Length; i++)
             {
-                bool found = false;
-                for (int j = 0; j < position; j++)
-                {
-                    if (permutation[j] == i)
-                    {
-                        found = true;
-                        break;
-                    }
-                }
-                if (found)
-                {
-                    continue;
-                }
+                var index = Array.IndexOf(permutation, i, 0, position);
+                if (index != -1) continue;
+
                 permutation[position] = i;
                 MakePermutations(permutation, position + 1);
             }

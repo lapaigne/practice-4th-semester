@@ -41,13 +41,18 @@
             // ---
             // permutations
 
-            //Permutations.MakePermutations(new int[3], 0);
+            //Permutations.MakePermutations(new int[4], 0);
 
             Permutations.TestOnSize(1);
             Permutations.TestOnSize(2);
             Permutations.TestOnSize(0);
             Permutations.TestOnSize(3);
             Permutations.TestOnSize(4);
+
+            // ---
+            // combinations
+
+            //Combinations.MakeCombinations(new bool[5], 3, 0);
         }
 
         static void CallRoman()
