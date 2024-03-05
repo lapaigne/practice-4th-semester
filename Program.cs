@@ -54,10 +54,16 @@
 
             //Combinations.MakeCombinations(new bool[5], 3, 0);
 
+            // ---
             // tickets
 
             //LuckyTicket.FindAll();
-            LuckyTicket.Call();
+            //LuckyTicket.Call();
+
+            // ---
+            // queens
+
+            
             
         }
 
