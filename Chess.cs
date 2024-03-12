@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,117 +9,102 @@ namespace practice_4th_semester
 {
     internal class Chess
     {
-        public static void Call()
+        public static void Call(int size)
         {
-            var board = MakeEmptyBoard(4);
-            var list = new List<int[]>();
-            PlaceQueen(board, 4, 0, list);
+            var board = new int[size, size];
+            var list = new List<int[,]>();
+            PlaceQueen(board, size, 0, list);
             foreach (var item in list)
             {
-                //Print(item);
-                //Console.WriteLine();
+                Print(item);
             }
-            Console.WriteLine(list.Count);
+            Console.WriteLine($"\n{list.Count}");
         }
 
-        public static void PlaceQueen(int[] board, int queensLeft, int column, List<int[]> list)
+        public static void PlaceQueen(int[,] board, int queensLeft, int column, List<int[,]> list)
         {
             if (!IsValid(board))
             {
                 return;
             }
 
-            Console.WriteLine(string.Join(' ', board));
-            Console.WriteLine(IsValid(board));
-            Print(board);
-
-            if (queensLeft == 0)
+            if (column == board.GetLength(0) || queensLeft < 0)
             {
+                list.Add((int[,])board.Clone());
                 return;
             }
 
-            if (column == board.Length)
+            for (int i = board.GetLength(0) - 1; i >= 0; i--)
             {
-                if (queensLeft > 0)
-                {
-                    return; 
-                }
-
-                if (IsValid(board))
-                {
-                    list.Add(board);
-                }
-                return;
-            }
-
-            for (int i = board.Length - 1; i >= 0; i--)
-            {
-                board[column] = i;
+                board[i, column] = 1;
                 PlaceQueen(board, queensLeft - 1, column + 1, list);
+                board[i, column] = 0;   
             }
         }
 
-        public static bool IsValid(int[] board)
+        public static bool IsValid(int[,] board)
         {
-            for (int i = 1; i < board.Length + 1; i++) // step
+            var size = board.GetLength(0);
+
+            if (size <= 1)
             {
-                for (int j = 0; j < board.Length; j++) // position
+                return true;
+            }
+
+            // rows et cols
+
+            for (int i = 0; i < size; i++)
+            {
+                var sumH = 0;
+                var sumV = 0;
+
+                for (int j = 0; j < size; j++)
                 {
-                    if (j + i < board.Length)
+                    sumH += board[i, j];
+                    sumV += board[j, i];
+                }
+
+                if (sumH > 1 || sumV > 1)
+                {
+                    return false;
+                }
+            }
+
+            // diagonals
+
+            for (int i = 1; i < 2 * (size - 1); i++)
+            {
+                var sumL = 0;
+                var sumR = 0;
+
+                for (int j = 0; j < size; j++)
+                {
+                    if (i - j >= 0 && i - j < size)
                     {
-                        //Console.WriteLine(board[j] + " " + board[j + i] + " " + j + " " + (j + i));
-                        if (board[j] == -1 || board[j + i] == -1)
-                        {
-                            continue;
-                        }
-                        if (Math.Abs(board[j] - board[j + i]) == i || board[j] - board[j + i] == 0)
-                        {
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        break;
+                        sumL += board[j, i - j];
+                        sumR += board[i - j, size - 1 - j];
                     }
                 }
+
+                if (sumL > 1 || sumR > 1)
+                {
+                    return false;
+                } 
             }
             return true;
         }
 
-        public static int[] MakeEmptyBoard(int size)
+        public static void Print(int[,] board)
         {
-            var array = new int[size];
-            for (int i = 0; i < array.Length; i++)
+            Console.WriteLine();
+            for (int i = 0; i < board.GetLength(0); i++)
             {
-                array[i] = -1;
-            }
-
-            return array;
-        }
-
-        public static void Print(int[] board)
-        {
-            var array = new string[board.Length];
-            for (int i = 0; i < board.Length; i++)
-            {
-                array[i] = new string('0', board.Length);
-            }
-
-            for (int i = 0; i < board.Length; i++)
-            {
-                StringBuilder builder = new StringBuilder(array[i]);
-                if (board[i] > -1)
+                for (int j = 0; j < board.GetLength(1); j++)
                 {
-                    builder[i] = '1';
-                    array[board[i]] = builder.ToString();
-                } 
+                    Console.Write($"{board[i,j]} ");
+                }
+                Console.WriteLine();
             }
-
-            foreach (var s in array)
-            {
-                Console.WriteLine(s);
-            }
-
         }
     }
 }

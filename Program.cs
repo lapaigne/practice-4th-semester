@@ -63,13 +63,7 @@
             // ---
             // queens
 
-            //var board = new int[] { 3, 3, -1, -1 };
-            //var b = Chess.IsValid(board);
-            //Console.WriteLine(b);
-            //Chess.Print(board);
-
-            Chess.Call();
-
+            //Chess.Call(4);
         }
 
         static void CallRoman()
