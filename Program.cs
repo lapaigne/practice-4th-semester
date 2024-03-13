@@ -64,6 +64,11 @@
             // queens
 
             //Chess.Call(4);
+
+            // ---
+            // labyrinth
+
+            Labyrinth.Call();
         }
 
         static void CallRoman()
