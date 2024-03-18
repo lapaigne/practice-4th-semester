@@ -68,7 +68,9 @@
             // ---
             // labyrinth
 
-            Labyrinth.Call();
+            //Labyrinth.Call();
+            //Labyrinth.CallStack();
+            Labyrinth.CallQueue();
         }
 
         static void CallRoman()

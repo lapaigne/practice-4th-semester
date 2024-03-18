@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 
 namespace practice_4th_semester
 {
@@ -54,6 +50,14 @@ namespace practice_4th_semester
 
         public static void Call()
         {
+            var map = MakeMap();
+
+            Print(map);
+            Visit(map, 0, 0);
+        }
+
+        static State[,] MakeMap()
+        {
             var map = new State[labyrinth[0].Length, labyrinth.Length];
             for (int x = 0; x < map.GetLength(0); x++)
             {
@@ -62,9 +66,79 @@ namespace practice_4th_semester
                     map[x, y] = labyrinth[y][x] == ' ' ? State.Empty : State.Wall;
                 }
             }
+            return map;
+        }
+
+        public static void CallStack()
+        {
+            var map = MakeMap();
+
+            var stack = new Stack<Point>();
+            stack.Push(new Point(0, 0));
+
+            while (stack.Count > 0)
+            {
+                var point = stack.Pop();
+                var x = point.X;
+                var y = point.Y;
+                if (x < 0 || x >= map.GetLength(0) || y < 0 || y >= map.GetLength(1)) continue;
+                if (map[x, y] != State.Empty) continue;
+                map[x, y] = State.Visited;
+                Print(map);
+
+                for (var dy = -1; dy <= 1; dy++)
+                {
+                    for (var dx = -1; dx <= 1; dx++)
+                    {
+                        if (dx != 0 && dy != 0)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            stack.Push(new Point(x + dx, y + dy));
+                        }
+                    }
+                }
+            }
 
             Print(map);
-            Visit(map, 0, 0);
+        }
+
+        public static void CallQueue()
+        {
+            var map = MakeMap();
+
+            var queue = new Queue<Point>();
+            queue.Enqueue(new Point(0, 0));
+
+            while (queue.Count > 0)
+            {
+                var point = queue.Dequeue();
+                var x = point.X;
+                var y = point.Y;
+                if (x < 0 || x >= map.GetLength(0) || y < 0 || y >= map.GetLength(1)) continue;
+                if (map[x, y] != State.Empty) continue;
+                map[x, y] = State.Visited;
+                Print(map);
+
+                for (var dy = -1; dy <= 1; dy++)
+                {
+                    for (var dx = -1; dx <= 1; dx++)
+                    {
+                        if (dx != 0 && dy != 0)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            queue.Enqueue(new Point(x + dx, y + dy));
+                        }
+                    }
+                }
+            }
+
+            Print(map);
         }
 
         static void Print(State[,] map)
