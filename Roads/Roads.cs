@@ -10,7 +10,7 @@ namespace practice_4th_semester.Roads
             new Robot
             {
                 id = 0,
-                current = 1,
+                current = 0,
                 speed = 1
             },
             new Robot
@@ -35,7 +35,7 @@ namespace practice_4th_semester.Roads
         
         public static void Call()
         {
-            network = MakeNetwork(6);
+            network = MakeNetwork(1);
 
             Step();
         }
@@ -82,12 +82,13 @@ namespace practice_4th_semester.Roads
         {
             while (true)
             {
-                var node = queue.Dequeue();
 
-                if (didMeet(3))
+                if (didMeet(robotCount))
                 {
                     break;
                 }
+
+                var node = queue.Dequeue();
 
                 for (int i = 0; i < network.GetLength(0); i++)
                 {
@@ -144,15 +145,16 @@ namespace practice_4th_semester.Roads
                     }
                 }
             }
-             
-            Console.WriteLine(minTime);
 
-            if (minTime > 0)
+            if (minTime >= 0)
             {
+                Console.WriteLine($"Время до встречи: {minTime.ToString("F")}");
                 return;
+            } 
+            else
+            {
+                Console.WriteLine("Роботы никогда не встретятся");
             }
-
-            Console.WriteLine("Роботы никогда не встретятся");
         }
 
         static bool didMeet(int count)
@@ -160,6 +162,7 @@ namespace practice_4th_semester.Roads
             var zeroth = queue.Where(robot => robot.id == 0);
             var first = queue.Where(robot => robot.id == 1);
             var second = queue.Where(robot => robot.id == 2);
+            //Console.WriteLine($"{zeroth.Count()} {first.Count()} {second.Count()}");
             
             bool isThreeRobots = count == 3;
 
@@ -167,7 +170,6 @@ namespace practice_4th_semester.Roads
             {
                 foreach (Robot robot1 in first)
                 {
-                    Console.WriteLine(second.Count());
                     if (isThreeRobots)
                     {
                         foreach (Robot robot2 in second)
@@ -177,9 +179,8 @@ namespace practice_4th_semester.Roads
                             bool canMeetEnRoute = 
                                 robot0.current == robot1.next && 
                                 robot0.next == robot1.current && 
-                                (robot0.current == robot2.current&& robot0.next == robot2.next|| robot0.current == robot1.current && robot0.next == robot1.next);
+                                (robot0.current == robot2.current && robot0.next == robot2.next|| robot0.current == robot1.current && robot0.next == robot1.next);
 
-                            Console.WriteLine(canMeetEnRoute);
                             if (canMeet)
                             {
                                 
@@ -192,16 +193,21 @@ namespace practice_4th_semester.Roads
                                     var counter = 0;
                                     for (int i = 0; i < network.GetLength(0); i++)
                                     {
-                                        if (network[robot0.current, i] != 0 && network[robot0.next, i] != 0)
+                                        if (network[robot0.current, i] != 0)
                                         {
                                             counter++;
                                         }
-                                        if (counter == 1)
+                                        if (network[robot0.next, i] != 0)
                                         {
-                                            minTime = -1;
-                                            
-                                            return false;
+                                            counter++;
                                         }
+                                        
+                                    }
+                                    if (counter == 2)
+                                    {
+                                        minTime = -1;
+
+                                        return true;
                                     }
                                 }
 
@@ -231,7 +237,7 @@ namespace practice_4th_semester.Roads
                         {
                             if (didMeetAtCity)
                             {
-                                var time = robot0.time - 0.5;
+                                var time = robot0.time;
                                 minTime = time;
                                 return true;
                             } 

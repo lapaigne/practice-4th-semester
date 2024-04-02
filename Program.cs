@@ -1,4 +1,6 @@
-﻿namespace practice_4th_semester
+﻿using practice_4th_semester.Graphs;
+
+namespace practice_4th_semester
 {
     internal class Program
     {
@@ -76,6 +78,33 @@
             // roads
 
             Roads.Roads.Call();
+
+
+        }
+
+        static void CallGraph()
+        {
+            //var graph = new Graph(2);
+            //graph[0].Connect(graph[1], graph);
+            //var node = new Node(1);
+            //graph[0].Connect(node, graph);
+            // с одной стороны вершина (вновь созданная) не лежит в графе, в графе лежат другие созданные вершины, а с другой стороны к ней уже подсоединена нулевая вершина
+
+            //graph.Connect(0, 1);
+
+            // произведем поиск из нулевой вершины
+
+            var graph = Graph.MakeGraph();
+
+            foreach (var e in Graph.BreadthSearch(graph[0]))
+            {
+                Console.WriteLine(e);
+            }
+
+            //foreach (var e in DepthSearch(graph[0]))
+            //{
+            //    Console.WriteLine(e);
+            //}
         }
 
         static void CallRoman()
