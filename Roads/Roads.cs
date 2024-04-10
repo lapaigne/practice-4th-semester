@@ -22,7 +22,7 @@ namespace practice_4th_semester.Roads
             new Robot
             {
                 id = 2,
-                current = 0,
+                current = 1,
                 speed = 2
             }
         ]);
@@ -162,8 +162,9 @@ namespace practice_4th_semester.Roads
             var zeroth = queue.Where(robot => robot.id == 0);
             var first = queue.Where(robot => robot.id == 1);
             var second = queue.Where(robot => robot.id == 2);
-            //Console.WriteLine($"{zeroth.Count()} {first.Count()} {second.Count()}");
+            Console.WriteLine($"{zeroth.Count()} {first.Count()} {second.Count()}");
             
+
             bool isThreeRobots = count == 3;
 
             foreach (Robot robot0 in zeroth) 
@@ -176,14 +177,25 @@ namespace practice_4th_semester.Roads
                         {
                             bool canMeet = robot0.time == robot1.time && robot0.time == robot2.time;
                             bool didMeetAtCity = robot0.current == robot1.current && robot0.current == robot2.current && robot0.distance == 0 && robot1.distance == 0 && robot2.distance == 0;
-                            bool canMeetEnRoute = 
-                                robot0.current == robot1.next && 
-                                robot0.next == robot1.current && 
-                                (robot0.current == robot2.current && robot0.next == robot2.next|| robot0.current == robot1.current && robot0.next == robot1.next);
 
+
+                            bool canMeetEnRoute =
+                                robot0.current == robot1.next &&
+                                robot0.next == robot1.current &&
+                                (robot0.current == robot2.current && robot0.next == robot2.next  || robot0.current == robot2.current && robot0.next == robot2.next)
+                                ;
+
+                            Console.WriteLine($"{canMeet} {canMeetEnRoute}");
                             if (canMeet)
                             {
-                                
+                                if (didMeetAtCity)
+                                {
+                                    var time = robot0.time;
+                                    minTime = time;
+                                    Console.WriteLine(time);
+                                    return true;
+                                }
+
                                 if (canMeetEnRoute && (
                                     robot0.speed != robot1.speed || 
                                     robot0.speed != robot2.speed || 
@@ -206,16 +218,9 @@ namespace practice_4th_semester.Roads
                                     if (counter == 2)
                                     {
                                         minTime = -1;
-
+                                        
                                         return true;
                                     }
-                                }
-
-                                if (didMeetAtCity)
-                                {
-                                    var time = robot0.time - 0.5;
-                                    minTime = time;
-                                    return true;
                                 }
 
                                 if (canMeetEnRoute)

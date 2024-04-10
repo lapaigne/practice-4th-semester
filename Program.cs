@@ -77,9 +77,56 @@ namespace practice_4th_semester
             // ---
             // roads
 
-            Roads.Roads.Call();
+            //Roads.Roads.Call();
+            CallGame();
 
 
+        }
+
+        public static void CallGame()
+        {
+            // начальная игра
+            var start = new Game(new[,] {
+                {4, 1, 3},
+                {7, 2, 6},
+                {5, 0, 8}
+            });
+
+            //конечная
+            var target = new Game(new[,]{
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 0}
+            });
+
+
+            // стандартный поиск в ширину
+            // граф достижимости различных ситуаций
+            // вершины - различные конфигурации игры
+            // ребрами соединены те конфигурации, которые могут привести одна в другую перемещении в всего одной фишки
+            Dictionary<Game, Game> path = new Dictionary<Game, Game>();
+            path[start] = null;
+            var queue = new Queue<Game>();
+            queue.Enqueue(start);
+            while (queue.Count != 0)
+            {
+                var game = queue.Dequeue();
+
+                var nextGames = game
+                    .AllAdjacentGames()
+                    .Where(g => !path.ContainsKey(g));
+                foreach (var nextGame in nextGames)
+                {
+                    path[nextGame] = game;
+                    queue.Enqueue(nextGame);
+                }
+                if (path.ContainsKey(target)) break;
+            }
+            while (target != null)
+            {
+                target.Print();
+                target = path[target];
+            }
         }
 
         static void CallGraph()
